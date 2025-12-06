@@ -61,6 +61,19 @@ function complex.polar(r, phi)
     )
 end
 
+---Equivalent of math.type
+---@param value any
+---@return "integer" | "float" | "complex" | nil
+function complex.type(value)
+    local tname = mtype(value)
+    if tname then
+        return tname --[[@as "integer" | "float"]]
+    else
+        local mt = getmetatable(value)
+        return mt == complex and mt "complex" or nil
+    end
+end
+
 ---Convert any value to complex number
 ---@param value any
 ---@return complex

@@ -40,6 +40,11 @@ complex.polar(r?: number, phi?: number): complex
 Creation from cartesian or polar coordinates.
 
 ``` lua
+complex.type(value: any): "integer"|"float"|"complex"|nil
+```
+Equivalent of function `math.type`.
+
+``` lua
 complex.tocomplex(value: any): complex
 ```
 Convert any value to complex number.
