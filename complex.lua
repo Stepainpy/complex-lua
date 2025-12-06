@@ -1,12 +1,14 @@
 --[[ Localization global functions and values ]]--
 
 local type = type
+local mtype = math.type
 local setmetatable = setmetatable
 
 local abs, sqrt = math.abs, math.sqrt
 local exp, log  = math.exp, math.log
 local sin, cos  = math.sin, math.cos
 local atan      = math.atan
+local floor     = math.floor
 
 local e, tau = exp(1), 2 * math.pi
 
@@ -212,7 +214,7 @@ end
 ---@return number
 local function round(x, prec)
     local shift = 10 ^ (prec or 0)
-    return math.floor(x * shift + 0.5) / shift
+    return floor(x * shift + 0.5) / shift
 end
 
 ---Round function for complex number
@@ -311,7 +313,7 @@ end
 ---@param n integer
 ---@return complex[]
 function complex.roots(z, n)
-    if math.type(n) ~= "integer" or n < 2 then return {} end
+    if mtype(n) ~= "integer" or n < 2 then return {} end
     z = complex.tocomplex(z)
     local sqrtr = z:abs() ^ (1/n)
     local phi_n = z:arg() / n
