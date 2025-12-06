@@ -70,7 +70,7 @@ function complex.type(value)
         return tname --[[@as "integer" | "float"]]
     else
         local mt = getmetatable(value)
-        return mt == complex and mt "complex" or nil
+        return mt == complex and "complex" or nil
     end
 end
 
@@ -78,13 +78,14 @@ end
 ---@param value any
 ---@return complex
 function complex.tocomplex(value)
-    if type(value) == "table" then
+    local tname = type(value)
+    if tname == "table" then
         if getmetatable(value) == complex then
             return value
         else
             return complex.new(value.real, value.imag)
         end
-    elseif type(value) == "number" then
+    elseif tname == "number" then
         return complex.new(value, 0)
     else
         return complex.new(0/0, 0/0)
