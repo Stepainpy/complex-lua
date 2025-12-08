@@ -511,4 +511,51 @@ function complex.acoth(z)
     return complex.log((z + 1) / (z - 1)) / 2
 end
 
+--[[ Gamma-function ]]--
+-- For calculation use Lanczos approximation
+-- with g = 8 and n = 12
+
+local gammaf_pi = complex.new(math.pi)
+local gammaf_sqrt_tau = complex.new(sqrt(tau))
+local gammaf_p = {
+    complex.new(0.9999999999999999298),
+    complex.new(1975.3739023578852322),
+    complex.new(-4397.3823927922428918),
+    complex.new(3462.6328459862717019),
+    complex.new(-1156.9851431631167820),
+    complex.new(154.53815050252775060),
+    complex.new(-6.2536716123689161798),
+    complex.new(0.034642762454736807441),
+    complex.new(-7.4776171974442977377e-7),
+    complex.new(6.3041253821852264261e-8),
+    complex.new(-2.7405717035683877489e-8),
+    complex.new(4.0486948817567609101e-9)
+}
+
+---Gamma-function of complex number
+---@param z complex | number
+---@return complex
+function complex.gamma(z)
+    z = complex.tocomplex(z)
+    if z.real < 0.5 then
+        return gammaf_pi / (
+            complex.sin(gammaf_pi * z) * complex.gamma(1 - z)
+        )
+    end
+
+    z = z - 1
+    local t = z + 8.5 --> t = z + g + 0.5
+    local x = gammaf_p[1]
+    for i = 2, #gammaf_p do
+        x = x + gammaf_p[i] / (z + (i - 1))
+    end
+
+    -- t ^ (z + 0.5) but arg(z) in [-pi, pi]
+    local tp = complex.exp((z + 0.5) * complex.new(
+        log(t:norm()) / 2, atan(t.imag, t.real)
+    ))
+
+    return gammaf_sqrt_tau * tp * complex.exp(-t) * x
+end
+
 return complex

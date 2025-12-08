@@ -183,3 +183,10 @@ complex.atanh(z: complex|number): complex
 complex.acoth(z: complex|number): complex
 ```
 Basic inverse hyperbolic functions for complex numbers.
+
+## Gamma-function
+
+``` lua
+complex.gamma(z: complex|number): complex
+```
+Returns value of Gamma-function of `z`.
