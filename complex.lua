@@ -78,14 +78,14 @@ end
 ---@param value any
 ---@return complex
 function complex.tocomplex(value)
-    local tname = type(value)
-    if tname == "table" then
-        if getmetatable(value) == complex then
-            return value
-        else
-            return complex.new(value.real, value.imag)
-        end
-    elseif tname == "number" then
+    local mt = getmetatable(value)
+    local ts = type(value)
+
+        if mt == complex then
+        return value
+    elseif ts == "table" then
+        return complex.new(value.real, value.imag)
+    elseif ts == "number" then
         return complex.new(value, 0)
     else
         return complex.new(0/0, 0/0)
