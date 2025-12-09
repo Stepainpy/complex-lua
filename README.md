@@ -117,7 +117,7 @@ Returns absolute value of complex number.
 ``` lua
 complex.arg(z: complex): number
 ```
-Returns argument of complex number in range [0, 2pi).
+Returns argument of complex number in range (-pi, pi].
 
 ``` lua
 complex.plr(z: complex): number, number

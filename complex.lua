@@ -267,8 +267,7 @@ end
 ---@param z complex
 ---@return number
 function complex.arg(z)
-    local a = atan(z.imag, z.real)
-    return a < 0 and tau + a or a
+    return atan(z.imag, z.real)
 end
 
 ---Polar coordinates of complex number
@@ -550,12 +549,7 @@ function complex.gamma(z)
         x = x + gammaf_p[i] / (z + (i - 1))
     end
 
-    -- t ^ (z + 0.5) but arg(z) in [-pi, pi]
-    local tp = complex.exp((z + 0.5) * complex.new(
-        log(t:norm()) / 2, atan(t.imag, t.real)
-    ))
-
-    return gammaf_sqrt_tau * tp * complex.exp(-t) * x
+    return gammaf_sqrt_tau * t ^ (z + 0.5) * complex.exp(-t) * x
 end
 
 return complex
