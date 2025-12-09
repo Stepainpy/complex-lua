@@ -477,7 +477,7 @@ end
 function complex.asec(z)
     z = complex.tocomplex(z)
     return complex.i * complex.log(
-        1 / z - complex.i * complex.sqrt(1 - 1 / (z*z))
+        1 / z - complex.i * complex.sqrt(1 - 1 / (z * z))
     )
 end
 
@@ -487,7 +487,7 @@ end
 function complex.acsc(z)
     z = complex.tocomplex(z)
     return complex.i * complex.log(
-        complex.sqrt(1 - 1 / (z*z)) - complex.i / z
+        complex.sqrt(1 - 1 / (z * z)) - complex.i / z
     )
 end
 
@@ -587,7 +587,7 @@ end
 function complex.asech(z)
     z = complex.tocomplex(z)
     return complex.log(
-        1 / z + complex.sqrt(1 / (z*z) - 1)
+        1 / z + complex.sqrt(1 / (z * z) - 1)
     )
 end
 
@@ -597,7 +597,7 @@ end
 function complex.acsch(z)
     z = complex.tocomplex(z)
     return complex.log(
-        1 / z + complex.sqrt(1 / (z*z) + 1)
+        1 / z + complex.sqrt(1 / (z * z) + 1)
     )
 end
 
