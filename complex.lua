@@ -1,7 +1,6 @@
 --[[ Localization global functions and values ]]--
 
-local type = type
-local mtype = math.type
+local type, mtype = type, math.type
 local setmetatable = setmetatable
 
 local abs, sqrt = math.abs, math.sqrt
@@ -144,47 +143,41 @@ end
 ---@param rhs complex | number
 ---@return boolean
 function complex.__eq(lhs, rhs)
-    lhs = complex.tocomplex(lhs)
-    rhs = complex.tocomplex(rhs)
-    return lhs.real == rhs.real and
-           lhs.imag == rhs.imag
+    local x, y = complex.tocomplex(lhs):crd()
+    local u, v = complex.tocomplex(rhs):crd()
+    return x == u and y == v
 end
 
 ---@param lhs complex | number
 ---@param rhs complex | number
 ---@return complex
 function complex.__add(lhs, rhs)
-    lhs = complex.tocomplex(lhs)
-    rhs = complex.tocomplex(rhs)
-    return complex.new(
-        lhs.real + rhs.real,
-        lhs.imag + rhs.imag
-    )
+    local x, y = complex.tocomplex(lhs):crd()
+    local u, v = complex.tocomplex(rhs):crd()
+    return complex.new(x + u, y + v)
 end
 
 ---@param lhs complex | number
 ---@param rhs complex | number
 ---@return complex
 function complex.__sub(lhs, rhs)
-    lhs = complex.tocomplex(lhs)
-    rhs = complex.tocomplex(rhs)
-    return complex.new(
-        lhs.real - rhs.real,
-        lhs.imag - rhs.imag
-    )
+    local x, y = complex.tocomplex(lhs):crd()
+    local u, v = complex.tocomplex(rhs):crd()
+    return complex.new(x - u, y - v)
 end
 
 ---@param lhs complex | number
 ---@param rhs complex | number
 ---@return complex
 function complex.__mul(lhs, rhs)
-    lhs = complex.tocomplex(lhs)
+    local x, y = complex.tocomplex(lhs):crd()
     if type(rhs) == "number" then
-        return complex.new(lhs.real * rhs, lhs.imag * rhs)
+        return complex.new(x * rhs, y * rhs)
     else
+        local u, v = rhs:crd()
         return complex.new(
-            lhs.real * rhs.real - lhs.imag * rhs.imag,
-            lhs.real * rhs.imag + lhs.imag * rhs.real
+            x * u - y * v,
+            x * v + y * u
         )
     end
 end
@@ -193,13 +186,14 @@ end
 ---@param rhs complex | number
 ---@return complex
 function complex.__div(lhs, rhs)
-    lhs = complex.tocomplex(lhs)
+    local x, y = complex.tocomplex(lhs):crd()
     if type(rhs) == "number" then
-        return complex.new(lhs.real / rhs, lhs.imag / rhs)
+        return complex.new(x / rhs, y / rhs)
     else
+        local n, u, v = rhs:norm(), rhs:crd()
         return complex.new(
-            (lhs.real * rhs.real + lhs.imag * rhs.imag) / rhs:norm(),
-            (lhs.imag * rhs.real - lhs.real * rhs.imag) / rhs:norm()
+            (x * u + y * v) / n,
+            (y * u - x * v) / n
         )
     end
 end
@@ -209,15 +203,11 @@ end
 ---@return complex
 function complex.__pow(lhs, rhs)
     lhs = complex.tocomplex(lhs)
+    local n, r, phi = lhs:norm(), lhs:plr()
     if type(rhs) == "number" then
-        return complex.polar(
-            lhs:abs() ^ rhs,
-            lhs:arg() * rhs
-        )
+        return complex.polar(r ^ rhs, phi * rhs)
     else
-        return complex.exp(rhs * complex.new(
-            log(lhs:norm()) / 2, lhs:arg()
-        ))
+        return complex.exp(rhs * complex.new(log(n) / 2, phi))
     end
 end
 
@@ -290,11 +280,8 @@ end
 ---@param z complex | number
 ---@return complex
 function complex.exp(z)
-    z = complex.tocomplex(z)
-    return complex.new(
-        exp(z.real) * cos(z.imag),
-        exp(z.real) * sin(z.imag)
-    )
+    local x, y = complex.tocomplex(z):crd()
+    return complex.new(exp(x) * cos(y), exp(x) * sin(y))
 end
 
 ---Complex logarithm
@@ -303,12 +290,13 @@ end
 ---@return complex
 function complex.log(z, base)
     z = complex.tocomplex(z)
+    local n, phi = z:norm(), z:arg()
     if not base then
-        return complex.new(log(z:norm()) / 2, z:arg())
+        return complex.new(log(n) / 2, phi)
     elseif type(base) == "number" then
         return complex.new(
-            log(z:norm(), base) / 2,
-            log(e, base) * z:arg()
+            log(n, base) / 2,
+            log(e, base) * phi
         )
     else
         return complex.log(z) / complex.log(base)
@@ -367,32 +355,26 @@ end
 ---@param z complex | number
 ---@return complex
 function complex.sin(z)
-    z = complex.tocomplex(z)
-    return complex.new(
-        sin(z.real) * cosh(z.imag),
-        cos(z.real) * sinh(z.imag)
-    )
+    local x, y = complex.tocomplex(z):crd()
+    return complex.new(sin(x) * cosh(y), cos(x) * sinh(y))
 end
 
 ---Cosine of complex number
 ---@param z complex | number
 ---@return complex
 function complex.cos(z)
-    z = complex.tocomplex(z)
-    return complex.new(
-        cos(z.real) *  cosh(z.imag),
-        sin(z.real) * -sinh(z.imag)
-    )
+    local x, y = complex.tocomplex(z):crd()
+    return complex.new(cos(x) * cosh(y), -sin(x) * sinh(y))
 end
 
 ---Tangent of complex number
 ---@param z complex | number
 ---@return complex
 function complex.tan(z)
-    z = complex.tocomplex(z)
+    local x, y = complex.tocomplex(z):crd()
     return complex.new(
-        sin (2 * z.real) / (cos(2 * z.real) + cosh(2 * z.imag)),
-        sinh(2 * z.imag) / (cos(2 * z.real) + cosh(2 * z.imag))
+        sin (2 * x) / (cos(2 * x) + cosh(2 * y)),
+        sinh(2 * y) / (cos(2 * x) + cosh(2 * y))
     )
 end
 
@@ -400,10 +382,10 @@ end
 ---@param z complex | number
 ---@return complex
 function complex.cot(z)
-    z = complex.tocomplex(z)
+    local x, y = complex.tocomplex(z):crd()
     return complex.new(
-        sin (2 * z.real) / -(cos(2 * z.real) - cosh(2 * z.imag)),
-        sinh(2 * z.imag) /  (cos(2 * z.real) - cosh(2 * z.imag))
+        sin (2 * x) / -(cos(2 * x) - cosh(2 * y)),
+        sinh(2 * y) /  (cos(2 * x) - cosh(2 * y))
     )
 end
 
@@ -411,10 +393,10 @@ end
 ---@param z complex | number
 ---@return complex
 function complex.sec(z)
-    z = complex.tocomplex(z)
+    local x, y = complex.tocomplex(z):crd()
     return complex.new(
-        2 * cos(z.real) * cosh(z.imag) / (cos(2 * z.real) + cosh(2 * z.imag)),
-        2 * sin(z.real) * sinh(z.imag) / (cos(2 * z.real) + cosh(2 * z.imag))
+        2 * cos(x) * cosh(y) / (cos(2 * x) + cosh(2 * y)),
+        2 * sin(x) * sinh(y) / (cos(2 * x) + cosh(2 * y))
     )
 end
 
@@ -422,10 +404,10 @@ end
 ---@param z complex | number
 ---@return complex
 function complex.csc(z)
-    z = complex.tocomplex(z)
+    local x, y = complex.tocomplex(z):crd()
     return complex.new(
-        2 * sin(z.real) * cosh(z.imag) / -(cos(2 * z.real) - cosh(2 * z.imag)),
-        2 * cos(z.real) * sinh(z.imag) /  (cos(2 * z.real) - cosh(2 * z.imag))
+        2 * sin(x) * cosh(y) / -(cos(2 * x) - cosh(2 * y)),
+        2 * cos(x) * sinh(y) /  (cos(2 * x) - cosh(2 * y))
     )
 end
 
@@ -529,10 +511,10 @@ end
 ---@param z complex | number
 ---@return complex
 function complex.sech(z)
-    z = complex.tocomplex(z)
+    local x, y = complex.tocomplex(z):crd()
     return complex.new(
-        2 * cosh(z.real) * cos(z.imag) /  (cosh(2 * z.real) + cos(2 * z.imag)),
-        2 * sinh(z.real) * sin(z.imag) / -(cosh(2 * z.real) + cos(2 * z.imag))
+        2 * cosh(x) * cos(y) /  (cosh(2 * x) + cos(2 * y)),
+        2 * sinh(x) * sin(y) / -(cosh(2 * x) + cos(2 * y))
     )
 end
 
@@ -540,10 +522,10 @@ end
 ---@param z complex | number
 ---@return complex
 function complex.csch(z)
-    z = complex.tocomplex(z)
+    local x, y = complex.tocomplex(z):crd()
     return complex.new(
-        2 * sinh(z.real) * cos(z.imag) / -(cos(2 * z.imag) - cosh(2 * z.real)),
-        2 * cosh(z.real) * sin(z.imag) /  (cos(2 * z.imag) - cosh(2 * z.real))
+        2 * sinh(x) * cos(y) / -(cos(2 * y) - cosh(2 * x)),
+        2 * cosh(x) * sin(y) /  (cos(2 * y) - cosh(2 * x))
     )
 end
 
