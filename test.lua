@@ -195,10 +195,13 @@ run_test([[
     local acos = z:acos():tostring(5)
     local atan = z:atan():tostring(5)
     local acot = z:acot():tostring(5)
-    return asin, acos, atan, acot
+    local asec = z:asec():tostring(5)
+    local acsc = z:acsc():tostring(5)
+    return asin, acos, atan, acot, asec, acsc
 ]], "Inverse version", {
     "0.63398 + 2.30551i", "0.93681 - 2.30551i",
-    "1.44831 + 0.15900i", "0.12249 - 0.15900i"
+    "1.44831 + 0.15900i", "0.12249 - 0.15900i",
+    "1.45205 + 0.16045i", "0.11875 - 0.16045i"
 })
 
 print "[#] Hyperbolic functions"

@@ -471,6 +471,26 @@ function complex.acot(z)
     )
 end
 
+---Inverse secant of complex number
+---@param z complex | number
+---@return complex
+function complex.asec(z)
+    z = complex.tocomplex(z)
+    return complex.i * complex.log(
+        1 / z - complex.i * complex.sqrt(1 - 1 / (z*z))
+    )
+end
+
+---Inverse cosecant of complex number
+---@param z complex | number
+---@return complex
+function complex.acsc(z)
+    z = complex.tocomplex(z)
+    return complex.i * complex.log(
+        complex.sqrt(1 - 1 / (z*z)) - complex.i / z
+    )
+end
+
 --[[ Hyperbolic functions ]]--
 
 ---Hyperbolic sine of complex number

@@ -170,6 +170,8 @@ complex.asin(z: complex|number): complex
 complex.acos(z: complex|number): complex
 complex.atan(z: complex|number): complex
 complex.acot(z: complex|number): complex
+complex.asec(z: complex|number): complex
+complex.acsc(z: complex|number): complex
 ```
 Basic inverse trigonometric functions for complex numbers.
 
