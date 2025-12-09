@@ -182,6 +182,8 @@ complex.sinh(z: complex|number): complex
 complex.cosh(z: complex|number): complex
 complex.tanh(z: complex|number): complex
 complex.coth(z: complex|number): complex
+complex.sech(z: complex|number): complex
+complex.csch(z: complex|number): complex
 ```
 Basic hyperbolic functions for complex numbers.
 

@@ -211,10 +211,13 @@ run_test([[
     local cosh = z:cosh():tostring(5)
     local tanh = z:tanh():tostring(5)
     local coth = z:coth():tostring(5)
-    return sinh, cosh, tanh, coth
+    local sech = z:sech():tostring(5)
+    local csch = z:csch():tostring(5)
+    return sinh, cosh, tanh, coth, sech, csch
 ]], "Forward version", {
     "-6.54812 - 7.61923i", "-6.58066 - 7.58155i",
-     "1.00071 + 0.00491i",  "0.99927 - 0.00490i"
+     "1.00071 + 0.00491i",  "0.99927 - 0.00490i",
+    "-0.06529 + 0.07522i", "-0.06488 + 0.07549i"
 })
 run_test([[
     local asinh = z:asinh():tostring(5)

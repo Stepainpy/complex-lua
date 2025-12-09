@@ -525,6 +525,28 @@ function complex.coth(z)
     return (complex.exp(2 * z) + 1) / (complex.exp(2 * z) - 1)
 end
 
+---Hyperbolic secant of complex number
+---@param z complex | number
+---@return complex
+function complex.sech(z)
+    z = complex.tocomplex(z)
+    return complex.new(
+        2 * cosh(z.real) * cos(z.imag) /  (cosh(2 * z.real) + cos(2 * z.imag)),
+        2 * sinh(z.real) * sin(z.imag) / -(cosh(2 * z.real) + cos(2 * z.imag))
+    )
+end
+
+---Hyperbolic cosecant of complex number
+---@param z complex | number
+---@return complex
+function complex.csch(z)
+    z = complex.tocomplex(z)
+    return complex.new(
+        2 * sinh(z.real) * cos(z.imag) / -(cos(2 * z.imag) - cosh(2 * z.real)),
+        2 * cosh(z.real) * sin(z.imag) /  (cos(2 * z.imag) - cosh(2 * z.real))
+    )
+end
+
 --[[ Inverse hyperbolic functions ]]--
 
 ---Inverse hyperbolic sine of complex number
