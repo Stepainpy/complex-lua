@@ -581,6 +581,26 @@ function complex.acoth(z)
     return complex.log((z + 1) / (z - 1)) / 2
 end
 
+---Inverse hyperbolic secant of complex number
+---@param z complex | number
+---@return complex
+function complex.asech(z)
+    z = complex.tocomplex(z)
+    return complex.log(
+        1 / z + complex.sqrt(1 / (z*z) - 1)
+    )
+end
+
+---Inverse hyperbolic cosecant of complex number
+---@param z complex | number
+---@return complex
+function complex.acsch(z)
+    z = complex.tocomplex(z)
+    return complex.log(
+        1 / z + complex.sqrt(1 / (z*z) + 1)
+    )
+end
+
 --[[ Gamma-function ]]--
 -- For calculation use Lanczos approximation
 -- with g = 8 and n = 12

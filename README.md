@@ -192,6 +192,8 @@ complex.asinh(z: complex|number): complex
 complex.acosh(z: complex|number): complex
 complex.atanh(z: complex|number): complex
 complex.acoth(z: complex|number): complex
+complex.asech(z: complex|number): complex
+complex.acsch(z: complex|number): complex
 ```
 Basic inverse hyperbolic functions for complex numbers.
 

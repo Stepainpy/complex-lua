@@ -224,10 +224,13 @@ run_test([[
     local acosh = z:acosh():tostring(5)
     local atanh = z:atanh():tostring(5)
     local acoth = z:acoth():tostring(5)
-    return asinh, acosh, atanh, acoth
+    local asech = z:asech():tostring(5)
+    local acsch = z:acsch():tostring(5)
+    return asinh, acosh, atanh, acoth, asech, acsch
 ]], "Inverse version", {
     "2.29991 + 0.91762i", "2.30551 + 0.93681i",
-    "0.11750 + 1.40992i", "0.11750 - 0.16088i"
+    "0.11750 + 1.40992i", "0.11750 - 0.16088i",
+    "0.16045 - 1.45205i", "0.12125 - 0.15951i"
 })
 
 print "[#] Gamma-function"
