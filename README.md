@@ -120,6 +120,11 @@ complex.arg(z: complex): number
 Returns argument of complex number in range (-pi, pi].
 
 ``` lua
+complex.crd(z: complex): number, number
+```
+Returns real and imaginary parts
+
+``` lua
 complex.plr(z: complex): number, number
 ```
 Retunrs absolute value and argument together.

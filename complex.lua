@@ -270,6 +270,13 @@ function complex.arg(z)
     return atan(z.imag, z.real)
 end
 
+---Cartesian coordinates of complex number
+---@param z complex
+---@return number, number
+function complex.crd(z)
+    return z.real, z.imag
+end
+
 ---Polar coordinates of complex number
 ---@param z complex
 ---@return number, number

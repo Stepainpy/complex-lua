@@ -138,6 +138,7 @@ run_test([[
         deg(( complex.i):arg()),
         deg((-complex.i):arg())
 ]], "Argumnet", {90, -90})
+run_test([[ return z:crd() ]], "Cartesian coordinates", {3, 4})
 run_test([[
     return complex.new(-1):plr()
 ]], "Polar coordinates", {1, math.pi})
