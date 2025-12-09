@@ -163,7 +163,7 @@ complex.cot(z: complex|number): complex
 complex.sec(z: complex|number): complex
 complex.csc(z: complex|number): complex
 ```
-Basic trigonometric functions for complex numbers.
+Trigonometric functions for complex numbers.
 
 ``` lua
 complex.asin(z: complex|number): complex
@@ -173,7 +173,7 @@ complex.acot(z: complex|number): complex
 complex.asec(z: complex|number): complex
 complex.acsc(z: complex|number): complex
 ```
-Basic inverse trigonometric functions for complex numbers.
+Inverse trigonometric functions for complex numbers.
 
 ## Hyperbolic functions
 
@@ -185,7 +185,7 @@ complex.coth(z: complex|number): complex
 complex.sech(z: complex|number): complex
 complex.csch(z: complex|number): complex
 ```
-Basic hyperbolic functions for complex numbers.
+Hyperbolic functions for complex numbers.
 
 ``` lua
 complex.asinh(z: complex|number): complex
@@ -195,7 +195,7 @@ complex.acoth(z: complex|number): complex
 complex.asech(z: complex|number): complex
 complex.acsch(z: complex|number): complex
 ```
-Basic inverse hyperbolic functions for complex numbers.
+Inverse hyperbolic functions for complex numbers.
 
 ## Gamma-function
 
