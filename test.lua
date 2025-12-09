@@ -182,10 +182,13 @@ run_test([[
     local cos = z:cos():tostring(5)
     local tan = z:tan():tostring(5)
     local cot = z:cot():tostring(5)
-    return sin, cos, tan, cot
+    local sec = z:sec():tostring(5)
+    local csc = z:csc():tostring(5)
+    return sin, cos, tan, cot, sec, csc
 ]], "Forward version", {
     "3.85374 - 27.01681i", "-27.03495 - 3.85115i",
-    "-0.00019 + 0.99936i",  "-0.00019 - 1.00064i"
+    "-0.00019 + 0.99936i",  "-0.00019 - 1.00064i",
+    "-0.03625 + 0.00516i",   "0.00517 + 0.03628i"
 })
 run_test([[
     local asin = z:asin():tostring(5)

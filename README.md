@@ -160,6 +160,8 @@ complex.sin(z: complex|number): complex
 complex.cos(z: complex|number): complex
 complex.tan(z: complex|number): complex
 complex.cot(z: complex|number): complex
+complex.sec(z: complex|number): complex
+complex.csc(z: complex|number): complex
 ```
 Basic trigonometric functions for complex numbers.
 

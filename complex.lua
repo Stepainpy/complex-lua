@@ -407,6 +407,28 @@ function complex.cot(z)
     )
 end
 
+---Secant of complex number
+---@param z complex | number
+---@return complex
+function complex.sec(z)
+    z = complex.tocomplex(z)
+    return complex.new(
+        2 * cos(z.real) * cosh(z.imag) / (cos(2 * z.real) + cosh(2 * z.imag)),
+        2 * sin(z.real) * sinh(z.imag) / (cos(2 * z.real) + cosh(2 * z.imag))
+    )
+end
+
+---Cosecant of complex number
+---@param z complex | number
+---@return complex
+function complex.csc(z)
+    z = complex.tocomplex(z)
+    return complex.new(
+        2 * sin(z.real) * cosh(z.imag) / -(cos(2 * z.real) - cosh(2 * z.imag)),
+        2 * cos(z.real) * sinh(z.imag) /  (cos(2 * z.real) - cosh(2 * z.imag))
+    )
+end
+
 --[[ Inverse trigonometric functions ]]--
 
 ---Inverse sine of complex number
