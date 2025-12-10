@@ -240,4 +240,4 @@ run_test([[
 ]], "Use as factorial", {"362880.0 + 0i"})
 run_test([[
     return z:gamma():tostring(5)
-]], "Use as factorial", {"0.00523 - 0.17255i"})
+]], "With complex variable", {"0.00523 - 0.17255i"})

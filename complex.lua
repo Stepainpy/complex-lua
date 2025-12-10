@@ -329,7 +329,7 @@ function complex.sqrt(z)
     )
 end
 
----A number of n-roots of complex number
+---A number of nth-roots of complex number
 ---@param z complex | number
 ---@param n integer
 ---@return complex[]
