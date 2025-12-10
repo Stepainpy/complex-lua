@@ -133,6 +133,20 @@ function complex:__tostring() return self:tostring() end
 
 --[[ Metamethods ]]--
 
+---Convert any value to real and imaginary parts
+---@param value any
+---@return number, number
+local function toreimpair(value)
+    local ts = type(value)
+    if ts == "table" then
+        return value.real, value.imag
+    elseif ts == "number" then
+        return value, 0
+    else
+        return 0/0, 0/0
+    end
+end
+
 ---@param z complex
 ---@return complex
 function complex.__unm(z)
@@ -143,8 +157,8 @@ end
 ---@param rhs complex | number
 ---@return boolean
 function complex.__eq(lhs, rhs)
-    local x, y = complex.tocomplex(lhs):crd()
-    local u, v = complex.tocomplex(rhs):crd()
+    local x, y = toreimpair(lhs)
+    local u, v = toreimpair(rhs)
     return x == u and y == v
 end
 
@@ -152,8 +166,8 @@ end
 ---@param rhs complex | number
 ---@return complex
 function complex.__add(lhs, rhs)
-    local x, y = complex.tocomplex(lhs):crd()
-    local u, v = complex.tocomplex(rhs):crd()
+    local x, y = toreimpair(lhs)
+    local u, v = toreimpair(rhs)
     return complex.new(x + u, y + v)
 end
 
@@ -161,8 +175,8 @@ end
 ---@param rhs complex | number
 ---@return complex
 function complex.__sub(lhs, rhs)
-    local x, y = complex.tocomplex(lhs):crd()
-    local u, v = complex.tocomplex(rhs):crd()
+    local x, y = toreimpair(lhs)
+    local u, v = toreimpair(rhs)
     return complex.new(x - u, y - v)
 end
 
@@ -170,11 +184,11 @@ end
 ---@param rhs complex | number
 ---@return complex
 function complex.__mul(lhs, rhs)
-    local x, y = complex.tocomplex(lhs):crd()
+    local x, y = toreimpair(lhs)
     if type(rhs) == "number" then
         return complex.new(x * rhs, y * rhs)
     else
-        local u, v = rhs:crd()
+        local u, v = toreimpair(rhs)
         return complex.new(
             x * u - y * v,
             x * v + y * u
@@ -186,14 +200,14 @@ end
 ---@param rhs complex | number
 ---@return complex
 function complex.__div(lhs, rhs)
-    local x, y = complex.tocomplex(lhs):crd()
+    local x, y = toreimpair(lhs)
     if type(rhs) == "number" then
         return complex.new(x / rhs, y / rhs)
     else
-        local n, u, v = rhs:norm(), rhs:crd()
+        local u, v = toreimpair(rhs)
         return complex.new(
-            (x * u + y * v) / n,
-            (y * u - x * v) / n
+            (x * u + y * v) / (u ^ 2 + v ^ 2),
+            (y * u - x * v) / (u ^ 2 + v ^ 2)
         )
     end
 end
@@ -202,12 +216,11 @@ end
 ---@param rhs complex | number
 ---@return complex
 function complex.__pow(lhs, rhs)
-    lhs = complex.tocomplex(lhs)
-    local n, r, phi = lhs:norm(), lhs:plr()
+    local r, phi = complex.tocomplex(lhs):plr()
     if type(rhs) == "number" then
         return complex.polar(r ^ rhs, phi * rhs)
     else
-        return complex.exp(rhs * complex.new(log(n) / 2, phi))
+        return complex.exp(rhs * complex.new(log(r), phi))
     end
 end
 
@@ -280,7 +293,7 @@ end
 ---@param z complex | number
 ---@return complex
 function complex.exp(z)
-    local x, y = complex.tocomplex(z):crd()
+    local x, y = toreimpair(z)
     return complex.new(exp(x) * cos(y), exp(x) * sin(y))
 end
 
@@ -355,7 +368,7 @@ end
 ---@param z complex | number
 ---@return complex
 function complex.sin(z)
-    local x, y = complex.tocomplex(z):crd()
+    local x, y = toreimpair(z)
     return complex.new(sin(x) * cosh(y), cos(x) * sinh(y))
 end
 
@@ -363,7 +376,7 @@ end
 ---@param z complex | number
 ---@return complex
 function complex.cos(z)
-    local x, y = complex.tocomplex(z):crd()
+    local x, y = toreimpair(z)
     return complex.new(cos(x) * cosh(y), -sin(x) * sinh(y))
 end
 
@@ -371,7 +384,7 @@ end
 ---@param z complex | number
 ---@return complex
 function complex.tan(z)
-    local x, y = complex.tocomplex(z):crd()
+    local x, y = toreimpair(z)
     return complex.new(
         sin (2 * x) / (cos(2 * x) + cosh(2 * y)),
         sinh(2 * y) / (cos(2 * x) + cosh(2 * y))
@@ -382,7 +395,7 @@ end
 ---@param z complex | number
 ---@return complex
 function complex.cot(z)
-    local x, y = complex.tocomplex(z):crd()
+    local x, y = toreimpair(z)
     return complex.new(
         sin (2 * x) / -(cos(2 * x) - cosh(2 * y)),
         sinh(2 * y) /  (cos(2 * x) - cosh(2 * y))
@@ -393,7 +406,7 @@ end
 ---@param z complex | number
 ---@return complex
 function complex.sec(z)
-    local x, y = complex.tocomplex(z):crd()
+    local x, y = toreimpair(z)
     return complex.new(
         2 * cos(x) * cosh(y) / (cos(2 * x) + cosh(2 * y)),
         2 * sin(x) * sinh(y) / (cos(2 * x) + cosh(2 * y))
@@ -404,7 +417,7 @@ end
 ---@param z complex | number
 ---@return complex
 function complex.csc(z)
-    local x, y = complex.tocomplex(z):crd()
+    local x, y = toreimpair(z)
     return complex.new(
         2 * sin(x) * cosh(y) / -(cos(2 * x) - cosh(2 * y)),
         2 * cos(x) * sinh(y) /  (cos(2 * x) - cosh(2 * y))
@@ -511,7 +524,7 @@ end
 ---@param z complex | number
 ---@return complex
 function complex.sech(z)
-    local x, y = complex.tocomplex(z):crd()
+    local x, y = toreimpair(z)
     return complex.new(
         2 * cosh(x) * cos(y) /  (cosh(2 * x) + cos(2 * y)),
         2 * sinh(x) * sin(y) / -(cosh(2 * x) + cos(2 * y))
@@ -522,7 +535,7 @@ end
 ---@param z complex | number
 ---@return complex
 function complex.csch(z)
-    local x, y = complex.tocomplex(z):crd()
+    local x, y = toreimpair(z)
     return complex.new(
         2 * sinh(x) * cos(y) / -(cos(2 * y) - cosh(2 * x)),
         2 * cosh(x) * sin(y) /  (cos(2 * y) - cosh(2 * x))
