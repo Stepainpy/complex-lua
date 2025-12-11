@@ -12,6 +12,13 @@ complex.i -> complex
 Imaginary unit.
 
 ``` lua
+complex.e -> complex
+complex.pi -> complex
+complex.tau -> complex
+```
+Mathematic constants as complex numbers.
+
+``` lua
 complex.FMT.imaginary_char -> string
 ```
 Character for printing imaginary unit.
@@ -53,12 +60,6 @@ complex.real -> number
 complex.imag -> number
 ```
 Field with real and imaginary parts of complex number.
-
-``` lua
-complex.Re(z: complex) -> number
-complex.Im(z: complex) -> number
-```
-Access to real and imaginary parts of complex number.
 
 ## Metamethods
 

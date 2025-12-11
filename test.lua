@@ -73,8 +73,8 @@ print "[#] Access to fields"
 
 run_test([[
     local a = complex.new(3, 4)
-    return a.real, a.imag, a:Re(), a:Im()
-]], "Get real and imaginary parts", {3, 4, 3, 4})
+    return a.real, a.imag
+]], "Get real and imaginary parts", {3, 4})
 
 print "[#] Conversion to string"
 

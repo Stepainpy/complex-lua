@@ -11,7 +11,7 @@ local sin, cos = math.sin, math.cos
 local atan, sqrt = math.atan, math.sqrt
 local floor, abs = math.floor, math.abs
 
-local e, tau = exp(1), 2 * math.pi
+local e, pi, tau = exp(1), math.pi, 2 * math.pi
 
 --[[ Definition of class and settings ]]--
 
@@ -89,21 +89,23 @@ function complex.tocomplex(value)
     end
 end
 
---[[ Access and constant ]]--
-
----Real part of complex numebr
----@param z complex
----@return number
-function complex.Re(z) return z.real end
-
----Imaginary part of complex numebr
----@param z complex
----@return number
-function complex.Im(z) return z.imag end
+--[[ Constants ]]--
 
 ---Imaginary unit
 ---@type complex
 complex.i = complex.new(0, 1)
+
+---Mathematic constant `e`
+---@type complex
+complex.e = complex.new(e)
+
+---Mathematic constant `pi`
+---@type complex
+complex.pi = complex.new(pi)
+
+---Mathematic constant `tau` (`2pi`)
+---@type complex
+complex.tau = complex.new(tau)
 
 --[[ Converts to string ]]--
 
@@ -598,21 +600,20 @@ end
 -- For calculation use Lanczos approximation
 -- with g = 8 and n = 12
 
-local gammaf_pi = complex.new(math.pi)
 local gammaf_sqrt_tau = complex.new(sqrt(tau))
 local gammaf_p = {
-    complex.new(0.9999999999999999298),
-    complex.new(1975.3739023578852322),
-    complex.new(-4397.3823927922428918),
-    complex.new(3462.6328459862717019),
-    complex.new(-1156.9851431631167820),
-    complex.new(154.53815050252775060),
-    complex.new(-6.2536716123689161798),
-    complex.new(0.034642762454736807441),
-    complex.new(-7.4776171974442977377e-7),
-    complex.new(6.3041253821852264261e-8),
-    complex.new(-2.7405717035683877489e-8),
-    complex.new(4.0486948817567609101e-9)
+    complex.new(    0.9999999999999999298     ),
+    complex.new( 1975.3739023578852322        ),
+    complex.new(-4397.3823927922428918        ),
+    complex.new( 3462.6328459862717019        ),
+    complex.new(-1156.9851431631167820        ),
+    complex.new(  154.53815050252775060       ),
+    complex.new(-   6.2536716123689161798     ),
+    complex.new(    0.034642762454736807441   ),
+    complex.new(-   7.477617197444297737700e-7),
+    complex.new(    6.304125382185226426100e-8),
+    complex.new(-   2.740571703568387748900e-8),
+    complex.new(    4.048694881756760910100e-9)
 }
 
 ---Gamma-function of complex number
@@ -621,8 +622,8 @@ local gammaf_p = {
 function complex.gamma(z)
     z = complex.tocomplex(z)
     if z.real < 0.5 then
-        return gammaf_pi / (
-            complex.sin(gammaf_pi * z) * complex.gamma(1 - z)
+        return complex.pi / (
+            complex.sin(complex.pi * z) * complex.gamma(1 - z)
         )
     end
 
