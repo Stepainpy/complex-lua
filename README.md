@@ -17,14 +17,10 @@ complex.FMT.imaginary_char -- string
 Character for printing imaginary unit.
 
 ``` lua
-complex.FMT.format_spec_char -- string
+complex.FMT.format_spec_char -- 'f'|'g'|'G'|'e'|'E'|'a'|'A'
+complex.FMT.format_sign_char -- nil|' '|'+'
 ```
-Format specefication character for type in `tostring`.
-
-``` lua
-complex.FMT.format_sign_char -- string
-```
-Format specefication character for sign behaviour in `tostring`.
+Format specefication character for type and sign behaviour in `complex.tostring`.
 
 ``` lua
 complex.FMT.epsilon -- number
