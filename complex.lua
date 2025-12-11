@@ -1,13 +1,15 @@
 --[[ Localization global functions and values ]]--
 
-local type, mtype = type, math.type
-local setmetatable = setmetatable
+local tostr = tostring
+local tblconcat = table.concat
+local gtype, mtype = type, math.type
+local gsetmetatable = setmetatable
+local ggetmetatable = getmetatable
 
-local abs, sqrt = math.abs, math.sqrt
-local exp, log  = math.exp, math.log
-local sin, cos  = math.sin, math.cos
-local atan      = math.atan
-local floor     = math.floor
+local exp, log = math.exp, math.log
+local sin, cos = math.sin, math.cos
+local atan, sqrt = math.atan, math.sqrt
+local floor, abs = math.floor, math.abs
 
 local e, tau = exp(1), 2 * math.pi
 
@@ -31,8 +33,9 @@ complex.FMT = {
     format_spec_char = 'f',
     ---@type nil|' '|'+'
     format_sign_char = nil,
-    ---@type string usually `i` or `j`
+    ---@type string Usually `i` or `j`
     imaginary_char = 'i',
+    ---@type number Enough close to zero
     epsilon = 1e-14
 }
 
@@ -43,7 +46,7 @@ complex.FMT = {
 ---@param imag? number
 ---@return complex
 function complex.new(real, imag)
-    return setmetatable({
+    return gsetmetatable({
         real = real or 0,
         imag = imag or 0
     }, complex)
@@ -64,21 +67,16 @@ end
 ---@param value any
 ---@return "integer" | "float" | "complex" | nil
 function complex.type(value)
-    local tname = mtype(value)
-    if tname then
-        return tname --[[@as "integer" | "float"]]
-    else
-        local mt = getmetatable(value)
-        return mt == complex and "complex" or nil
-    end
+    return mtype(value) --[[@as "integer" | "float"]] or
+        ggetmetatable(value) == complex and "complex" or nil
 end
 
 ---Convert any value to complex number
 ---@param value any
 ---@return complex
 function complex.tocomplex(value)
-    local mt = getmetatable(value)
-    local ts = type(value)
+    local mt = ggetmetatable(value)
+    local ts = gtype(value)
 
         if mt == complex then
         return value
@@ -120,12 +118,12 @@ function complex.tostring(z, prec)
     local els, re, im = {}, z.real, z.imag
 
     if re >= 0 then els[#els + 1] = complex.FMT.format_sign_char end
-    els[#els + 1] = prec and fmt:format(    re ) or tostring(    re )
+    els[#els + 1] = prec and fmt:format(    re ) or tostr(    re )
     els[#els + 1] = im < 0 and ' - ' or ' + '
-    els[#els + 1] = prec and fmt:format(abs(im)) or tostring(abs(im))
+    els[#els + 1] = prec and fmt:format(abs(im)) or tostr(abs(im))
     els[#els + 1] = complex.FMT.imaginary_char
 
-    return table.concat(els)
+    return tblconcat(els)
 end
 
 ---@return string
@@ -137,7 +135,7 @@ function complex:__tostring() return self:tostring() end
 ---@param value any
 ---@return number, number
 local function toreimpair(value)
-    local ts = type(value)
+    local ts = gtype(value)
     if ts == "table" then
         return value.real, value.imag
     elseif ts == "number" then
@@ -185,7 +183,7 @@ end
 ---@return complex
 function complex.__mul(lhs, rhs)
     local x, y = toreimpair(lhs)
-    if type(rhs) == "number" then
+    if gtype(rhs) == "number" then
         return complex.new(x * rhs, y * rhs)
     else
         local u, v = toreimpair(rhs)
@@ -201,7 +199,7 @@ end
 ---@return complex
 function complex.__div(lhs, rhs)
     local x, y = toreimpair(lhs)
-    if type(rhs) == "number" then
+    if gtype(rhs) == "number" then
         return complex.new(x / rhs, y / rhs)
     else
         local u, v = toreimpair(rhs)
@@ -217,7 +215,7 @@ end
 ---@return complex
 function complex.__pow(lhs, rhs)
     local r, phi = complex.tocomplex(lhs):plr()
-    if type(rhs) == "number" then
+    if gtype(rhs) == "number" then
         return complex.polar(r ^ rhs, phi * rhs)
     else
         return complex.exp(rhs * complex.new(log(r), phi))
@@ -306,7 +304,7 @@ function complex.log(z, base)
     local n, phi = z:norm(), z:arg()
     if not base then
         return complex.new(log(n) / 2, phi)
-    elseif type(base) == "number" then
+    elseif gtype(base) == "number" then
         return complex.new(
             log(n, base) / 2,
             log(e, base) * phi

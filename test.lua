@@ -2,6 +2,9 @@ local complex = require "complex"
 
 local z = complex.new(3, 4)
 local w = complex.new(2, 5)
+
+local OK   = "\x1b[32m OK \x1b[0m"
+local FAIL = "\x1b[31mFAIL\x1b[0m"
 local env_tbl = {
     z = z, w = w,
     complex = complex,
@@ -19,7 +22,7 @@ local function run_test(code, name, expected)
 
     io.stdout:write('- [')
     if not func then
-        io.stdout:write("\x1b[31m", "FAIL", "\x1b[0m")
+        io.stdout:write(FAIL)
     else
         local received = {func()}
         for i = 1, #expected do
@@ -30,10 +33,7 @@ local function run_test(code, name, expected)
                 break
             end
         end
-
-        if ok then io.stdout:write("\x1b[32m", " OK ", "\x1b[0m")
-        else       io.stdout:write("\x1b[31m", "FAIL", "\x1b[0m")
-        end
+        io.stdout:write(ok and OK or FAIL)
     end
     io.stdout:write('] ', name)
     if errmsg or not ok then
