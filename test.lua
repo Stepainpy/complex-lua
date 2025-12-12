@@ -185,11 +185,14 @@ run_test([[
 })
 run_test([[
     local x1, x2, x3 = complex.cubic(0.25, 0.75, -1.5, -2)
+    local y1, y2, y3 = complex.cubic(1, 0, 0, -1)
     local z1, z2, z3 = complex.cubic(z, w, v, u)
     return
         tostring(x1.real), tostring(x2.real), tostring(x3.real),
+        y1:tostring(5), y2:tostring(5), y3:tostring(5),
         z1:tostring(5), z2:tostring(5), z3:tostring(5)
 ]], "Solving cubic equation", {'-4.0', '2.0', '-1.0',
+    "-0.50000 - 0.86603i", "1.00000 + 0.00000i", "-0.50000 + 0.86603i",
     "0.41401 + 1.08744i", "-0.49414 - 1.01255i", "-0.95987 - 0.35489i"
 })
 

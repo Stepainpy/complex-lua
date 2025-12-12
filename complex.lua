@@ -368,11 +368,18 @@ function complex.cubic(a, b, c, d)
     local a3 = a * -3
     local d0 = b * b - a * c * 3
     local d1 = b * b * b * 2 - a * b * c * 9 + a * a * d * 27
-    local C = ((d1 + complex.sqrt(d1 * d1 - d0 * d0 * d0 * 4)) / 2):roots(3)
+    local C, d0C
+    if d0 == 0 then
+        C = complex.roots(d1, 3)
+        d0C = {complex.new(), complex.new(), complex.new()}
+    else
+        C = ((d1 + complex.sqrt(d1 * d1 - d0 * d0 * d0 * 4)) / 2):roots(3)
+        d0C = {d0 / C[1], d0 / C[2], d0 / C[3]}
+    end
     return
-        (b + C[1] + d0 / C[1]) / a3,
-        (b + C[2] + d0 / C[2]) / a3,
-        (b + C[3] + d0 / C[3]) / a3
+        (C[1] + d0C[1] + b) / a3,
+        (C[2] + d0C[2] + b) / a3,
+        (C[3] + d0C[3] + b) / a3
 end
 
 --[[ Trigonometric functions ]]--
