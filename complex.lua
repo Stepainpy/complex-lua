@@ -358,6 +358,23 @@ function complex.quadratic(a, b, c)
     return (-b - D) / (a * 2), (-b + D) / (a * 2)
 end
 
+---Solving `az^3 + bz^2 + cz + d = 0`
+---@param a complex | number
+---@param b complex | number
+---@param c complex | number
+---@param d complex | number
+---@return complex, complex, complex
+function complex.cubic(a, b, c, d)
+    local a3 = a * -3
+    local d0 = b * b - a * c * 3
+    local d1 = b * b * b * 2 - a * b * c * 9 + a * a * d * 27
+    local C = ((d1 + complex.sqrt(d1 * d1 - d0 * d0 * d0 * 4)) / 2):roots(3)
+    return
+        (b + C[1] + d0 / C[1]) / a3,
+        (b + C[2] + d0 / C[2]) / a3,
+        (b + C[3] + d0 / C[3]) / a3
+end
+
 --[[ Trigonometric functions ]]--
 
 ---Hyperbolic sine

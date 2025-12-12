@@ -155,6 +155,11 @@ complex.quadratic(a: complex|number, b: complex|number, c: complex|number) -> co
 ```
 Solving quadratic equation (`az^2 + bz + c = 0`).
 
+``` lua
+complex.cubic(a: complex|number, b: complex|number, c: complex|number, d: complex|number) -> complex, complex, complex
+```
+Solving cubic equation (`az^3 + bz^2 + cz + d = 0`).
+
 ## Trigonometric functions
 
 ``` lua

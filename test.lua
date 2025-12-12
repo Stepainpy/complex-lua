@@ -3,13 +3,14 @@ local complex = require "complex"
 local z = complex.new(3, 4)
 local w = complex.new(2, 5)
 local v = complex.new(7, 1)
+local u = complex.new(6, 3)
 
 local OK   = "\x1b[32m OK \x1b[0m"
 local FAIL = "\x1b[31mFAIL\x1b[0m"
 local env_tbl = {
-    z = z, w = w, v = v,
-    complex = complex,
+    z = z, w = w, v = v, u = u,
     tostring = tostring,
+    complex = complex,
     rad = math.rad,
     deg = math.deg,
 }
@@ -181,6 +182,15 @@ run_test([[
     return x1.real, x2.real, z1:tostring(5), z2:tostring(5)
 ]], "Solving quadratic equation", {
     1, 5, "0.03661 + 0.88908i", "-1.07661 - 1.16908i"
+})
+run_test([[
+    local x1, x2, x3 = complex.cubic(0.25, 0.75, -1.5, -2)
+    local z1, z2, z3 = complex.cubic(z, w, v, u)
+    return
+        tostring(x1.real), tostring(x2.real), tostring(x3.real),
+        z1:tostring(5), z2:tostring(5), z3:tostring(5)
+]], "Solving cubic equation", {'-4.0', '2.0', '-1.0',
+    "0.41401 + 1.08744i", "-0.49414 - 1.01255i", "-0.95987 - 0.35489i"
 })
 
 print "[#] Trigonometric functions"
