@@ -478,7 +478,7 @@ end
 ---@return complex
 function complex.atan(z)
     z = complex.tocomplex(z)
-    return -complex.i / 2 * complex.log(
+    return complex.new(0, -0.5) * complex.log(
         (complex.i - z) / (complex.i + z)
     )
 end
@@ -488,7 +488,7 @@ end
 ---@return complex
 function complex.acot(z)
     z = complex.tocomplex(z)
-    return -complex.i / 2 * complex.log(
+    return complex.new(0, -0.5) * complex.log(
         (z + complex.i) / (z - complex.i)
     )
 end
@@ -536,7 +536,7 @@ end
 ---@return complex
 function complex.tanh(z)
     z = complex.tocomplex(z)
-    return (complex.exp(2 * z) - 1) / (complex.exp(2 * z) + 1)
+    return (complex.exp(z * 2) - 1) / (complex.exp(z * 2) + 1)
 end
 
 ---Hyperbolic cotangent of complex number
@@ -544,7 +544,7 @@ end
 ---@return complex
 function complex.coth(z)
     z = complex.tocomplex(z)
-    return (complex.exp(2 * z) + 1) / (complex.exp(2 * z) - 1)
+    return (complex.exp(z * 2) + 1) / (complex.exp(z * 2) - 1)
 end
 
 ---Hyperbolic secant of complex number
