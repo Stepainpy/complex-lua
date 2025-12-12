@@ -150,6 +150,11 @@ complex.roots(z: complex|number, n: integer) -> complex[]
 ```
 Returns list of values of nth-root of complex number.
 
+``` lua
+complex.quadratic(a: complex|number, b: complex|number, c: complex|number) -> complex, complex
+```
+Solving quadratic equation (`az^2 + bz + c = 0`).
+
 ## Trigonometric functions
 
 ``` lua

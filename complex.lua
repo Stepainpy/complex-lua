@@ -348,6 +348,16 @@ function complex.roots(z, n)
     return roots
 end
 
+---Solving `az^2 + bz + c = 0`
+---@param a complex | number
+---@param b complex | number
+---@param c complex | number
+---@return complex, complex
+function complex.quadratic(a, b, c)
+    local D = complex.sqrt(b * b - a * c * 4)
+    return (-b - D) / (a * 2), (-b + D) / (a * 2)
+end
+
 --[[ Trigonometric functions ]]--
 
 ---Hyperbolic sine
