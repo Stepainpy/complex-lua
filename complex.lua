@@ -75,8 +75,7 @@ end
 ---@param value any
 ---@return complex?
 function complex.tocomplex(value)
-    local mt = ggetmetatable(value)
-    if mt == complex then return value end
+    if ggetmetatable(value) == complex then return value end
 
     local ts = gtype(value)
     if ts == "number" then
@@ -486,7 +485,7 @@ end
 function complex.asin(z)
     z = complex.tocomplex(z) --[[@as complex]]
     return complex.i * complex.log(
-        complex.sqrt(1 - z * z) - complex.new(-z.imag, z.real)
+        complex.sqrt(1 - z:sqr()) - complex.new(-z.imag, z.real)
     )
 end
 
@@ -496,7 +495,7 @@ end
 function complex.acos(z)
     z = complex.tocomplex(z) --[[@as complex]]
     return complex.i * complex.log(
-        z - complex.i * complex.sqrt(1 - z * z)
+        z - complex.i * complex.sqrt(1 - z:sqr())
     )
 end
 
@@ -526,7 +525,7 @@ end
 function complex.asec(z)
     z = complex.tocomplex(z) --[[@as complex]]
     return complex.i * complex.log(
-        1 / z - complex.i * complex.sqrt(1 - 1 / (z * z))
+        1 / z - complex.i * complex.sqrt(1 - 1 / z:sqr())
     )
 end
 
@@ -536,7 +535,7 @@ end
 function complex.acsc(z)
     z = complex.tocomplex(z) --[[@as complex]]
     return complex.i * complex.log(
-        complex.sqrt(1 - 1 / (z * z)) - complex.i / z
+        complex.sqrt(1 - 1 / z:sqr()) - complex.i / z
     )
 end
 
@@ -603,7 +602,7 @@ end
 ---@return complex
 function complex.asinh(z)
     z = complex.tocomplex(z) --[[@as complex]]
-    return complex.log(z + complex.sqrt(z * z + 1))
+    return complex.log(z + complex.sqrt(z:sqr() + 1))
 end
 
 ---Inverse hyperbolic cosine of complex number
@@ -611,7 +610,7 @@ end
 ---@return complex
 function complex.acosh(z)
     z = complex.tocomplex(z) --[[@as complex]]
-    return complex.log(z + complex.sqrt(z * z - 1))
+    return complex.log(z + complex.sqrt(z:sqr() - 1))
 end
 
 ---Inverse hyperbolic tangent of complex number
@@ -636,7 +635,7 @@ end
 function complex.asech(z)
     z = complex.tocomplex(z) --[[@as complex]]
     return complex.log(
-        1 / z + complex.sqrt(1 / (z * z) - 1)
+        1 / z + complex.sqrt(1 / z:sqr() - 1)
     )
 end
 
@@ -646,7 +645,7 @@ end
 function complex.acsch(z)
     z = complex.tocomplex(z) --[[@as complex]]
     return complex.log(
-        1 / z + complex.sqrt(1 / (z * z) + 1)
+        1 / z + complex.sqrt(1 / z:sqr() + 1)
     )
 end
 
