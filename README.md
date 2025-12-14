@@ -48,10 +48,10 @@ complex.type(value: any) -> "integer"|"float"|"complex"|nil
 Equivalent of function `math.type`.
 
 ``` lua
-complex.tocomplex(value: any) -> complex
+complex.tocomplex(value: any) -> complex?
 ```
 Convert any value to complex number.
-If value not table nor number, then return NaN + NaNi.
+If value not table nor number, then return **fail**.
 
 ## Access to value
 
@@ -146,9 +146,10 @@ complex.sqrt(z: complex|number) -> complex
 Returns one value of square root of complex number.
 
 ``` lua
-complex.roots(z: complex|number, n: integer) -> complex[]
+complex.roots(z: complex|number, n: integer) -> complex[]?
 ```
 Returns list of values of nth-root of complex number.
+If `n` is not integer or less than 2, then return **fail**.
 
 ``` lua
 complex.quadratic(a: complex|number, b: complex|number, c: complex|number) -> complex, complex

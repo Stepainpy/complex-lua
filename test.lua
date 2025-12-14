@@ -26,21 +26,26 @@ local function run_test(code, name, expected)
     if not func then
         io.stdout:write(FAIL)
     else
-        local received = {func()}
-        for i = 1, #expected do
-            if expected[i] ~= received[i] then
-                errmsg = "'"..tostring(expected[i])..
-                    "' != '"..tostring(received[i]).."'"
-                ok = false
-                break
+        local received = {pcall(func)}
+        local status = received[1]
+        table.remove(received, 1)
+
+        if not status then
+            ok, errmsg = false, received[1] --[[@as string]]
+        else
+            for i = 1, #expected do
+                if expected[i] ~= received[i] then
+                    errmsg = "'"..tostring(expected[i])..
+                        "' != '"..tostring(received[i]).."'"
+                    ok = false
+                    break
+                end
             end
         end
         io.stdout:write(ok and OK or FAIL)
     end
     io.stdout:write('] ', name)
-    if errmsg or not ok then
-        io.stdout:write(' (', errmsg, ')')
-    end
+    if errmsg then io.stdout:write(' (', errmsg, ')') end
     io.stdout:write('\n')
 end
 
@@ -66,10 +71,8 @@ run_test([[
     return
         complex.tocomplex(z),
         complex.tocomplex({real = 3, imag = 4}),
-        a.real, a.imag,
-        b.real ~= b.real,
-        b.imag ~= b.imag
-]], "Conversion to complex", {z, z, 1, 0, true, true})
+        a.real, a.imag, not b
+]], "Conversion to complex", {z, z, 1, 0, true})
 
 print "[#] Access to fields"
 

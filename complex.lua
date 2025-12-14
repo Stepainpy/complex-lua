@@ -73,19 +73,18 @@ end
 
 ---Convert any value to complex number
 ---@param value any
----@return complex
+---@return complex?
 function complex.tocomplex(value)
     local mt = ggetmetatable(value)
-    local ts = gtype(value)
+    if mt == complex then return value end
 
-        if mt == complex then
-        return value
+    local ts = gtype(value)
+    if ts == "number" then
+        return complex.new(value, 0)
     elseif ts == "table" then
         return complex.new(value.real, value.imag)
-    elseif ts == "number" then
-        return complex.new(value, 0)
     else
-        return complex.new(0/0, 0/0)
+        return nil
     end
 end
 
@@ -135,7 +134,7 @@ function complex:__tostring() return self:tostring() end
 
 ---Convert any value to real and imaginary parts
 ---@param value any
----@return number, number
+---@return number?, number?
 local function toreimpair(value)
     local ts = gtype(value)
     if ts == "table" then
@@ -143,7 +142,7 @@ local function toreimpair(value)
     elseif ts == "number" then
         return value, 0
     else
-        return 0/0, 0/0
+        return nil, nil
     end
 end
 
@@ -263,7 +262,7 @@ end
 ---@param z complex
 ---@return number
 function complex.abs(z)
-    return sqrt(z:norm())
+    return sqrt(z.real ^ 2 + z.imag ^ 2)
 end
 
 ---Argument of complex number
@@ -293,7 +292,7 @@ end
 ---@param z complex | number
 ---@return complex
 function complex.exp(z)
-    local x, y = toreimpair(z)
+    local x, y = toreimpair(z) --[[@as number]]
     return complex.new(exp(x) * cos(y), exp(x) * sin(y))
 end
 
@@ -302,7 +301,7 @@ end
 ---@param base? complex | number
 ---@return complex
 function complex.log(z, base)
-    z = complex.tocomplex(z)
+    z = complex.tocomplex(z) --[[@as complex]]
     local n, phi = z:norm(), z:arg()
     if not base then
         return complex.new(log(n) / 2, phi)
@@ -322,7 +321,7 @@ end
 ---@param z complex | number
 ---@return complex
 function complex.sqrt(z)
-    z = complex.tocomplex(z)
+    z = complex.tocomplex(z) --[[@as complex]]
     return complex.new(
         sqrt(( z.real + z:abs()) / 2),
         sqrt((-z.real + z:abs()) / 2) * (z.imag < 0 and -1 or 1)
@@ -332,10 +331,10 @@ end
 ---A number of nth-roots of complex number
 ---@param z complex | number
 ---@param n integer
----@return complex[]
+---@return complex[]?
 function complex.roots(z, n)
-    if mtype(n) ~= "integer" or n < 2 then return {} end
-    z = complex.tocomplex(z)
+    if mtype(n) ~= "integer" or n < 2 then return nil end
+    z = complex.tocomplex(z) --[[@as complex]]
     local sqrtr = z:abs() ^ (1/n)
     local phi_n = z:arg() / n
     local roots = {}
@@ -370,10 +369,11 @@ function complex.cubic(a, b, c, d)
     local d1 = b * b * b * 2 - a * b * c * 9 + a * a * d * 27
     local C, d0C
     if d0 == 0 then
-        C = complex.roots(d1, 3)
+        C = complex.roots(d1, 3) --[=[@as complex[]]=]
         d0C = {complex.new(), complex.new(), complex.new()}
     else
-        C = ((d1 + complex.sqrt(d1 * d1 - d0 * d0 * d0 * 4)) / 2):roots(3)
+        C = ((d1 + complex.sqrt(d1 * d1 - d0 * d0 * d0 * 4)) / 2
+            ):roots(3) --[=[@as complex[]]=]
         d0C = {d0 / C[1], d0 / C[2], d0 / C[3]}
     end
     return
@@ -402,7 +402,7 @@ end
 ---@param z complex | number
 ---@return complex
 function complex.sin(z)
-    local x, y = toreimpair(z)
+    local x, y = toreimpair(z) --[[@as number]]
     return complex.new(sin(x) * cosh(y), cos(x) * sinh(y))
 end
 
@@ -410,7 +410,7 @@ end
 ---@param z complex | number
 ---@return complex
 function complex.cos(z)
-    local x, y = toreimpair(z)
+    local x, y = toreimpair(z) --[[@as number]]
     return complex.new(cos(x) * cosh(y), -sin(x) * sinh(y))
 end
 
@@ -440,7 +440,7 @@ end
 ---@param z complex | number
 ---@return complex
 function complex.sec(z)
-    local x, y = toreimpair(z)
+    local x, y = toreimpair(z) --[[@as number]]
     return complex.new(
         2 * cos(x) * cosh(y) / (cos(2 * x) + cosh(2 * y)),
         2 * sin(x) * sinh(y) / (cos(2 * x) + cosh(2 * y))
@@ -451,7 +451,7 @@ end
 ---@param z complex | number
 ---@return complex
 function complex.csc(z)
-    local x, y = toreimpair(z)
+    local x, y = toreimpair(z) --[[@as number]]
     return complex.new(
         2 * sin(x) * cosh(y) / -(cos(2 * x) - cosh(2 * y)),
         2 * cos(x) * sinh(y) /  (cos(2 * x) - cosh(2 * y))
@@ -464,7 +464,7 @@ end
 ---@param z complex | number
 ---@return complex
 function complex.asin(z)
-    z = complex.tocomplex(z)
+    z = complex.tocomplex(z) --[[@as complex]]
     return complex.i * complex.log(
         complex.sqrt(1 - z * z) - complex.new(-z.imag, z.real)
     )
@@ -474,7 +474,7 @@ end
 ---@param z complex | number
 ---@return complex
 function complex.acos(z)
-    z = complex.tocomplex(z)
+    z = complex.tocomplex(z) --[[@as complex]]
     return complex.i * complex.log(
         z - complex.i * complex.sqrt(1 - z * z)
     )
@@ -484,7 +484,7 @@ end
 ---@param z complex | number
 ---@return complex
 function complex.atan(z)
-    z = complex.tocomplex(z)
+    z = complex.tocomplex(z) --[[@as complex]]
     return complex.new(0, -0.5) * complex.log(
         (complex.i - z) / (complex.i + z)
     )
@@ -494,7 +494,7 @@ end
 ---@param z complex | number
 ---@return complex
 function complex.acot(z)
-    z = complex.tocomplex(z)
+    z = complex.tocomplex(z) --[[@as complex]]
     return complex.new(0, -0.5) * complex.log(
         (z + complex.i) / (z - complex.i)
     )
@@ -504,7 +504,7 @@ end
 ---@param z complex | number
 ---@return complex
 function complex.asec(z)
-    z = complex.tocomplex(z)
+    z = complex.tocomplex(z) --[[@as complex]]
     return complex.i * complex.log(
         1 / z - complex.i * complex.sqrt(1 - 1 / (z * z))
     )
@@ -514,7 +514,7 @@ end
 ---@param z complex | number
 ---@return complex
 function complex.acsc(z)
-    z = complex.tocomplex(z)
+    z = complex.tocomplex(z) --[[@as complex]]
     return complex.i * complex.log(
         complex.sqrt(1 - 1 / (z * z)) - complex.i / z
     )
@@ -526,7 +526,7 @@ end
 ---@param z complex | number
 ---@return complex
 function complex.sinh(z)
-    z = complex.tocomplex(z)
+    z = complex.tocomplex(z) --[[@as complex]]
     return (complex.exp(z) - complex.exp(-z)) / 2
 end
 
@@ -534,7 +534,7 @@ end
 ---@param z complex | number
 ---@return complex
 function complex.cosh(z)
-    z = complex.tocomplex(z)
+    z = complex.tocomplex(z) --[[@as complex]]
     return (complex.exp(z) + complex.exp(-z)) / 2
 end
 
@@ -542,7 +542,7 @@ end
 ---@param z complex | number
 ---@return complex
 function complex.tanh(z)
-    z = complex.tocomplex(z)
+    z = complex.tocomplex(z) --[[@as complex]]
     return (complex.exp(z * 2) - 1) / (complex.exp(z * 2) + 1)
 end
 
@@ -550,7 +550,7 @@ end
 ---@param z complex | number
 ---@return complex
 function complex.coth(z)
-    z = complex.tocomplex(z)
+    z = complex.tocomplex(z) --[[@as complex]]
     return (complex.exp(z * 2) + 1) / (complex.exp(z * 2) - 1)
 end
 
@@ -558,7 +558,7 @@ end
 ---@param z complex | number
 ---@return complex
 function complex.sech(z)
-    local x, y = toreimpair(z)
+    local x, y = toreimpair(z) --[[@as number]]
     return complex.new(
         2 * cosh(x) * cos(y) /  (cosh(2 * x) + cos(2 * y)),
         2 * sinh(x) * sin(y) / -(cosh(2 * x) + cos(2 * y))
@@ -569,7 +569,7 @@ end
 ---@param z complex | number
 ---@return complex
 function complex.csch(z)
-    local x, y = toreimpair(z)
+    local x, y = toreimpair(z) --[[@as number]]
     return complex.new(
         2 * sinh(x) * cos(y) / -(cos(2 * y) - cosh(2 * x)),
         2 * cosh(x) * sin(y) /  (cos(2 * y) - cosh(2 * x))
@@ -582,7 +582,7 @@ end
 ---@param z complex | number
 ---@return complex
 function complex.asinh(z)
-    z = complex.tocomplex(z)
+    z = complex.tocomplex(z) --[[@as complex]]
     return complex.log(z + complex.sqrt(z * z + 1))
 end
 
@@ -590,7 +590,7 @@ end
 ---@param z complex | number
 ---@return complex
 function complex.acosh(z)
-    z = complex.tocomplex(z)
+    z = complex.tocomplex(z) --[[@as complex]]
     return complex.log(z + complex.sqrt(z * z - 1))
 end
 
@@ -598,7 +598,7 @@ end
 ---@param z complex | number
 ---@return complex
 function complex.atanh(z)
-    z = complex.tocomplex(z)
+    z = complex.tocomplex(z) --[[@as complex]]
     return complex.log((1 + z) / (1 - z)) / 2
 end
 
@@ -606,7 +606,7 @@ end
 ---@param z complex | number
 ---@return complex
 function complex.acoth(z)
-    z = complex.tocomplex(z)
+    z = complex.tocomplex(z) --[[@as complex]]
     return complex.log((z + 1) / (z - 1)) / 2
 end
 
@@ -614,7 +614,7 @@ end
 ---@param z complex | number
 ---@return complex
 function complex.asech(z)
-    z = complex.tocomplex(z)
+    z = complex.tocomplex(z) --[[@as complex]]
     return complex.log(
         1 / z + complex.sqrt(1 / (z * z) - 1)
     )
@@ -624,7 +624,7 @@ end
 ---@param z complex | number
 ---@return complex
 function complex.acsch(z)
-    z = complex.tocomplex(z)
+    z = complex.tocomplex(z) --[[@as complex]]
     return complex.log(
         1 / z + complex.sqrt(1 / (z * z) + 1)
     )
@@ -654,7 +654,7 @@ local gammaf_p = {
 ---@param z complex | number
 ---@return complex
 function complex.gamma(z)
-    z = complex.tocomplex(z)
+    z = complex.tocomplex(z) --[[@as complex]]
     if z.real < 0.5 then
         return complex.pi / (
             complex.sin(complex.pi * z) * complex.gamma(1 - z)
