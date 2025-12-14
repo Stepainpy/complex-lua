@@ -257,7 +257,7 @@ run_test([[
     "0.16045 - 1.45205i", "0.12125 - 0.15951i"
 })
 
-print "[#] Gamma-function"
+print "[#] Gamma function"
 
 run_test([[
     return complex.gamma(10):tostring()

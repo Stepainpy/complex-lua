@@ -205,9 +205,9 @@ complex.acsch(z: complex|number) -> complex
 ```
 Inverse hyperbolic functions for complex numbers.
 
-## Gamma-function
+## Gamma function
 
 ``` lua
 complex.gamma(z: complex|number) -> complex
 ```
-Returns value of Gamma-function of `z`.
+Returns value of gamma function of `z`.

@@ -630,12 +630,12 @@ function complex.acsch(z)
     )
 end
 
---[[ Gamma-function ]]--
+--[[ Gamma function ]]--
 -- For calculation use Lanczos approximation
 -- with g = 8 and n = 12
 
-local gammaf_sqrt_tau = complex.new(sqrt(tau))
-local gammaf_p = {
+local gamma_sqrt_tau = complex.new(sqrt(tau))
+local gamma_p = {
     complex.new(    0.9999999999999999298     ),
     complex.new( 1975.3739023578852322        ),
     complex.new(-4397.3823927922428918        ),
@@ -650,7 +650,7 @@ local gammaf_p = {
     complex.new(    4.048694881756760910100e-9)
 }
 
----Gamma-function of complex number
+---Gamma function for complex numbers
 ---@param z complex | number
 ---@return complex
 function complex.gamma(z)
@@ -663,12 +663,12 @@ function complex.gamma(z)
 
     z = z - 1
     local t = z + 8.5 --> t = z + g + 0.5
-    local x = gammaf_p[1]
-    for i = 2, #gammaf_p do
-        x = x + gammaf_p[i] / (z + (i - 1))
+    local x = gamma_p[1]
+    for i = 2, #gamma_p do
+        x = x + gamma_p[i] / (z + (i - 1))
     end
 
-    return gammaf_sqrt_tau * t ^ (z + 0.5) * complex.exp(-t) * x
+    return gamma_sqrt_tau * t ^ (z + 0.5) * complex.exp(-t) * x
 end
 
 return complex
