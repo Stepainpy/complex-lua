@@ -286,6 +286,25 @@ function complex.plr(z)
     return z:abs(), z:arg()
 end
 
+---Square of complex number
+---@param z complex
+---@return complex
+function complex.sqr(z)
+    local x, y = z.real, z.imag
+    return complex.new(x * x - y * y, 2 * x * y)
+end
+
+---Cube of complex number
+---@param z complex
+---@return complex
+function complex.cube(z)
+    local x, y = z.real, z.imag
+    return complex.new(
+        x * x * x - 3 * x * y * y,
+        3 * x * x * y - y * y * y
+    )
+end
+
 --[[ Exponential and logarithm function ]]--
 
 ---Complex exponent
@@ -322,9 +341,10 @@ end
 ---@return complex
 function complex.sqrt(z)
     z = complex.tocomplex(z) --[[@as complex]]
+    local r = z:abs()
     return complex.new(
-        sqrt(( z.real + z:abs()) / 2),
-        sqrt((-z.real + z:abs()) / 2) * (z.imag < 0 and -1 or 1)
+        sqrt((r + z.real) / 2),
+        sqrt((r - z.real) / 2) * (z.imag < 0 and -1 or 1)
     )
 end
 

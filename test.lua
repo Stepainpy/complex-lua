@@ -147,6 +147,16 @@ run_test([[ return z:crd() ]], "Cartesian coordinates", {3, 4})
 run_test([[
     return complex.new(-1):plr()
 ]], "Polar coordinates", {1, math.pi})
+run_test([[
+    return
+          z :sqr().real,   z :sqr().imag,
+        (-w):sqr().real, (-w):sqr().imag
+]], "Square of number", {-7, 24, -21, 20})
+run_test([[
+    return
+          z :cube().real,   z :cube().imag,
+        (-w):cube().real, (-w):cube().imag
+]], "Cube of number", {-117, 44, 142, 65})
 
 print "[#] Exponential and logarithm function"
 

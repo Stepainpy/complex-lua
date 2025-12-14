@@ -126,6 +126,16 @@ complex.plr(z: complex) -> number, number
 ```
 Retunrs absolute value and argument together.
 
+``` lua
+complex.sqr(z: complex) -> complex
+```
+Returns square (`z^2`) of complex number.
+
+``` lua
+complex.cube(z: complex) -> complex
+```
+Returns cube (`z^3`) of complex number.
+
 ## Exponential and logarithm function
 
 ``` lua
