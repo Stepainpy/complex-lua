@@ -6,12 +6,16 @@ local gtype, mtype = type, math.type
 local gsetmetatable = setmetatable
 local ggetmetatable = getmetatable
 
-local exp, log  = math.exp, math.log
-local sin, cos  = math.sin, math.cos
-local abs, sqrt = math.abs, math.sqrt
+local exp, abs = math.exp, math.abs
+local sin, cos = math.sin, math.cos
+local ln, sqrt = math.log, math.sqrt
+local floor    = math.floor
 
 ---@type fun(y: number, x?: number): number
 local atan = math[_VERSION > "Lua 5.2" and "atan" or "atan2"]
+local log = _VERSION > "Lua 5.1" and math.log or function (x, base)
+    return not base and ln(x) or ln(x) / ln(base)
+end
 
 local e, pi, tau = exp(1), math.pi, 2 * math.pi
 
@@ -231,7 +235,7 @@ end
 ---@return number
 local function round(x, prec)
     local shift = 10 ^ (prec or 0)
-    return math.floor(x * shift + 0.5) / shift
+    return floor(x * shift + 0.5) / shift
 end
 
 ---Round function for complex number
