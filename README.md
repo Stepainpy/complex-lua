@@ -2,7 +2,7 @@
 
 ## Overview
 
-Implementation complex numbers for Lua. Overload basic operators and mathematic functions. Compatibility with Lua 5.1+.
+Implementation complex numbers for Lua. Overload basic operators and mathematic functions. Compatibility with Lua 5.3+.
 
 ## Library constants
 

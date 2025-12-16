@@ -6,16 +6,10 @@ local gtype, mtype = type, math.type
 local gsetmetatable = setmetatable
 local ggetmetatable = getmetatable
 
-local exp, abs = math.exp, math.abs
+local exp, log = math.exp, math.log
 local sin, cos = math.sin, math.cos
-local ln, sqrt = math.log, math.sqrt
-local floor    = math.floor
-
----@type fun(y: number, x?: number): number
-local atan = math[_VERSION > "Lua 5.2" and "atan" or "atan2"]
-local log = _VERSION > "Lua 5.1" and math.log or function (x, base)
-    return not base and ln(x) or ln(x) / ln(base)
-end
+local abs, sqrt = math.abs, math.sqrt
+local atan, floor = math.atan, math.floor
 
 local e, pi, tau = exp(1), math.pi, 2 * math.pi
 
