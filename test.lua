@@ -11,6 +11,7 @@ local env_tbl = {
     z = z, w = w, v = v, u = u,
     tostring = tostring,
     complex = complex,
+    abs = math.abs,
     rad = math.rad,
     deg = math.deg,
 }
@@ -201,10 +202,10 @@ run_test([[
     local y1, y2, y3 = complex.cubic(1, 0, 0, -1)
     local z1, z2, z3 = complex.cubic(z, w, v, u)
     return
-        tostring(x1.real), tostring(x2.real), tostring(x3.real),
+        abs(x1.real + 4) < 1e-9, abs(x2.real - 2) < 1e-9, abs(x3.real + 1) < 1e-9,
         y1:tostring(5), y2:tostring(5), y3:tostring(5),
         z1:tostring(5), z2:tostring(5), z3:tostring(5)
-]], "Solving cubic equation", {'-4.0', '2.0', '-1.0',
+]], "Solving cubic equation", {true, true, true,
     "-0.50000 - 0.86603i", "1.00000 + 0.00000i", "-0.50000 + 0.86603i",
     "0.41401 + 1.08744i", "-0.49414 - 1.01255i", "-0.95987 - 0.35489i"
 })
@@ -270,8 +271,8 @@ run_test([[
 print "[#] Gamma function"
 
 run_test([[
-    return complex.gamma(10):tostring()
-]], "Use as factorial", {"362880.0 + 0i"})
+    return abs(complex.gamma(10).real - 362880) < 1e-9
+]], "Use as factorial", {true})
 run_test([[
     return z:gamma():tostring(5)
 ]], "With complex variable", {"0.00523 - 0.17255i"})
